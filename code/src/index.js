@@ -9,12 +9,12 @@ import { AuthProvider } from './contexts/auth.context';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 	<React.StrictMode>
-		<HashRouter>
+		<BrowserRouter>
 			<AuthProvider>
 				<MemberChangeMenuProvider>
 					<App />
 				</MemberChangeMenuProvider>
 			</AuthProvider>
-		</HashRouter>
+		</BrowserRouter>
 	</React.StrictMode>
 );
