@@ -1,16 +1,16 @@
-import ObjectToQueryString from './object-to-query-string.utils';
-
-const apiUrl =
-	'https://script.google.com/macros/s/AKfycbyOP8PgufP0ITKrrAqH47xQ1606OxG4KhPUWkG1WhE5e9DsGWOqp-qYH4HY4yYK0RU/exec';
+const apiUrl = 'https://gas-proxy-server-test.zeabur.app/api';
 
 // **通用 API 請求函式**
 async function SendRequest(data) {
 	try {
-		const queryString = ObjectToQueryString(data);
-		const apiUrlWithParams = `${apiUrl}?${queryString}`;
-		const response = await fetch(apiUrlWithParams, { method: 'GET', mode: 'cors' });
+		const response = await fetch(apiUrl, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data),
+		});
 
-		if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}, 連接GAS失敗`);
+		if (response.status === 500)
+			throw new Error(`HTTP error! Status: ${response.status}, 連接GAS失敗`);
 
 		const result = await response.json();
 		return result;

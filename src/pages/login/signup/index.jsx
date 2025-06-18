@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import SendRequest from '../../../utils/auth-service.utils';
-import Loading from '../../../components/loading';
-import FormInput from '../../../components/form-input';
-import Button from '../../../components/button';
-
 import styled from 'styled-components';
+
+import SendRequest from '@utils/auth-service.utils';
+import { Loading, useMessage } from '@components/loading';
+import { FormInput } from '@/components/input';
+import Button from '@components/button';
+
 const SignupContainer = styled.div`
 	display: flex;
 	width: 40%;
@@ -35,34 +36,49 @@ const defaultSingUp = {
 };
 
 function SignUp({ loading, setLoading }) {
+	const { messages, handleMessage } = useMessage();
 	const [singUpForm, setSingUpForm] = useState(defaultSingUp);
-	const [message, setMessage] = useState('');
 
 	const handleSignUp = async () => {
-		if (!singUpForm.email && !singUpForm.password && !singUpForm.confirmPassword) {
-			setMessage('請輸入信箱/密碼');
+		handleMessage({ type: 'reset' });
+
+		if (singUpForm.email === '') {
+			handleMessage({ type: 'error', content: '請輸入信箱' });
 			return;
 		}
+		if (singUpForm.password === '') {
+			handleMessage({ type: 'error', content: '請輸入密碼' });
+			return;
+		}
+		if (singUpForm.confirmPassword === '') {
+			handleMessage({ type: 'error', content: '請輸入再次確認的密碼' });
+			return;
+		}
+
 		if (singUpForm.password !== singUpForm.confirmPassword) {
-			setMessage('密碼請重新確認');
+			handleMessage({ type: 'error', content: '密碼核對有誤，請重新確認' });
 			return;
 		}
-		if (loading) return alert('Please be patient. wait a few minutes.');
-
-		setLoading(true);
-		setMessage('');
-
-		const data = {
-			do: 'signup',
-			mail: singUpForm.email,
-			password: singUpForm.password,
-		};
+		if (loading) return;
 
 		try {
+			setLoading(true);
+			handleMessage({ type: 'single' });
+
+			const data = {
+				do: 'signup',
+				mail: singUpForm.email,
+				password: singUpForm.password,
+			};
 			const result = await SendRequest(data);
-			setMessage(result.message);
+			if (!result.success) {
+				handleMessage({ type: 'error', content: `${result.message}` });
+				throw new Error(result.message);
+			}
+			handleMessage({ type: 'single', content: `${result.message}` });
+			handleMessage({ type: 'success' });
 		} catch (error) {
-			setMessage('發生錯誤，請稍後再試');
+			console.error(error);
 		} finally {
 			setLoading(false);
 		}
@@ -115,7 +131,7 @@ function SignUp({ loading, setLoading }) {
 					showPassword={singUpForm.showConfirmPassword}
 					onToggleClick={() => handleClickChange('showConfirmPassword')}
 				/>
-				{message && <MessageStyled>{message}</MessageStyled>}
+				{messages && <MessageStyled>{messages}</MessageStyled>}
 				<Button
 					type="submit"
 					onClick={handleSignUp}

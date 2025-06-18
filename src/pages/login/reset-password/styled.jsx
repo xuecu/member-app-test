@@ -11,7 +11,7 @@ export const ContainerStyled = styled.div`
 export const InputGroup = styled.div`
 	display: flex;
 	flex-direction: column;
-	width: 100%;
+	width: 50%;
 	padding-left: 30px;
 	position: relative;
 	padding-top: 20px;
