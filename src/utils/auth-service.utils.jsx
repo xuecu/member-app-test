@@ -1,7 +1,9 @@
+const apiUrl = 'https://gas-proxy-server-test.zeabur.app/api';
+
 // **通用 API 請求函式**
 async function SendRequest(data) {
 	try {
-		const response = await fetch(process.env.GAS_URL, {
+		const response = await fetch(apiUrl, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(data),
