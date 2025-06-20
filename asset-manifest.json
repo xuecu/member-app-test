@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/member-app-test/static/css/main.3ce23c5e.css",
+    "main.js": "/member-app-test/static/js/main.cc7b1766.js",
+    "index.html": "/member-app-test/index.html",
+    "main.3ce23c5e.css.map": "/member-app-test/static/css/main.3ce23c5e.css.map",
+    "main.cc7b1766.js.map": "/member-app-test/static/js/main.cc7b1766.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3ce23c5e.css",
+    "static/js/main.cc7b1766.js"
+  ]
+}
